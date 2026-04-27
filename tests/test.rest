@@ -1,0 +1,113 @@
+### 1. Health check
+GET http://localhost:3000/api/health
+
+### 2. Register
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+    "email": "john@example.com",
+    "password": "parola123secure",
+    "name": "John Doe"
+}
+
+### 3. Register — duplicate email (409)
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+    "email": "john@example.com",
+    "password": "altaparola1",
+    "name": "Alt John"
+}
+
+### 4. Login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "john@example.com",
+    "password": "parola123secure"
+}
+
+### 5. Login — wrong password (401)
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "john@example.com",
+    "password": "gresita"
+}
+
+### 6. Access protected route with token
+GET http://localhost:3000/api/auth/me
+Authorization: Bearer PASTE_ACCESS_TOKEN
+
+### 7. Access protected route without token (401)
+GET http://localhost:3000/api/auth/me
+
+### 8. Refresh token — get new access token (old refresh token is invalidated)
+POST http://localhost:3000/api/auth/refresh
+Content-Type: application/json
+
+{
+    "refreshToken": "PASTE_REFRESH_TOKEN"
+}
+
+### 9. Reuse old refresh token (401 — rotation in action)
+POST http://localhost:3000/api/auth/refresh
+Content-Type: application/json
+
+{
+    "refreshToken": "PASTE_SAME_OLD_REFRESH_TOKEN"
+}
+
+### 10. Create article (authenticated)
+POST http://localhost:3000/api/articles
+Content-Type: application/json
+Authorization: Bearer PASTE_ACCESS_TOKEN
+
+{
+    "title": "Securitatea API-urilor",
+    "content": "JWT si OAuth sunt esentiale pentru securizarea API-urilor RESTful."
+}
+
+### 11. Create article without token (401)
+POST http://localhost:3000/api/articles
+Content-Type: application/json
+
+{
+    "title": "Nu ar trebui sa mearga",
+    "content": "Fara token"
+}
+
+### 12. Get all articles (public, no auth needed)
+GET http://localhost:3000/api/articles
+
+### 13. Delete article as regular user (403 — admin only)
+DELETE http://localhost:3000/api/articles/1
+Authorization: Bearer PASTE_ACCESS_TOKEN
+
+### 14. Google OAuth login
+POST http://localhost:3000/api/auth/google
+Content-Type: application/json
+
+{
+    "idToken": "PASTE_GOOGLE_ID_TOKEN"
+}
+
+### 15. Google OAuth — invalid token (401)
+POST http://localhost:3000/api/auth/google
+Content-Type: application/json
+
+{
+    "idToken": "token.invalid.here"
+}
+
+### 16. Logout — invalidate refresh token
+POST http://localhost:3000/api/auth/logout
+Content-Type: application/json
+
+{
+    "refreshToken": "PASTE_REFRESH_TOKEN"
+}
