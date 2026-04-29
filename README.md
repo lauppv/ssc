@@ -8,7 +8,18 @@
 
 ## Setup
 
-Pe Linux, daca `npm install` da erori de compilare, instaleaza mai intai:
+### Windows
+
+```bash
+cd ssc
+copy .env.example .env
+npm install
+npm run dev
+```
+
+### Linux
+
+Daca `npm install` da erori de compilare, instaleaza mai intai:
 ```bash
 sudo apt install build-essential python3
 ```
